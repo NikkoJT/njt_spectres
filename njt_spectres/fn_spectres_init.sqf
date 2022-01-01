@@ -1,6 +1,10 @@
+// This function is called when a Spectre team is activated from a terminal.
+
 params ["_target","_caller"];
 
 _spectresList = [];
+
+// Detect what terminal is being used and get the group associated with it
 
 switch (vehicleVarName _target) do {
 	case "spectres_terminalA"	: {
@@ -20,6 +24,7 @@ switch (vehicleVarName _target) do {
 	};
 };
 
+// Run setup on Spectres to be activated - enable their simulation and give them all their special attributes.
 {
 	_spectre = missionNamespace getVariable [_x,objNull];
 	if (isNull _spectre) exitWith {};
@@ -39,6 +44,7 @@ switch (vehicleVarName _target) do {
 	[_spectre,"RADIOPROTOCOL"] remoteExec ["disableAI",0,true];
 	[_spectre,false] remoteExec ["setCaptive",0,true];
 
+	// This is the damage handler that makes them harder to kill
 	[_spectre,["HandleDamage", {
 		params ["_unit", "_selection", "_damage", "_source", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
 		
@@ -49,10 +55,12 @@ switch (vehicleVarName _target) do {
 		}]
 	] remoteExec ["addEventHandler",0,true];
 	
+	// Add them to the group of the person who activated the terminal.
 	[_spectre] join _caller;
 	sleep 0.5;
-	["spectreJoin",_spectre] call njt_fnc_spectres_dialogue;
+	["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
 	
+	// Don't shake the lightbulb
 	[_spectre,
 		[	"Talk to Spectre",	// title
 			{
@@ -65,6 +73,27 @@ switch (vehicleVarName _target) do {
 			true,		// hideOnUse
 			"",			// shortcut
 			"(side _this) == (side _target)", 	// condition
+			3,			// radius
+			false,		// unconscious
+			"",			// selection
+			""			// memoryPoint};
+	]] remoteExec ["addAction",0,true];
+	
+	// Fireteam leaders can recruit Spectres from other fireteams
+	[_spectre,
+		[	"Add Spectre to fireteam",	// title
+			{
+				params ["_target", "_caller", "_actionId", "_arguments"];
+				[_target] join _caller;
+				sleep 0.5;
+				["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
+			},
+			nil,		// arguments
+			1.5,		// priority
+			true,		// showWindow
+			true,		// hideOnUse
+			"",			// shortcut
+			"((side _this) == (side _target)) && {(_this == (leader _this)) && !(_this == leader _target)}", 	// condition
 			3,			// radius
 			false,		// unconscious
 			"",			// selection

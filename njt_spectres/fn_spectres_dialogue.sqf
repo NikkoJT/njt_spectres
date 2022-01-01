@@ -1,12 +1,20 @@
+// This function handles the randomised dialogue selection for Spectres.
+
 params ["_event","_unit","_damageSource"];
 
 private _dialogueArray = [];
+
+// This variable will be used later to alter the chances of a dialogue line actually playing in a given case.
+// Cases roll a random number with an adjusted probability of rolling the "magic" number that allows the line to play, or hard set the number if they should always play.
 private _number = 3;
 
+// Detect what kind of dialogue we need
 switch (_event) do {
-			
+	
+	// Dialogue used by the damage received EH
 	case "incomingFire" :	{
 	
+		// One particular Spectre gets special lines
 		if (str _unit in ["unitSPECTRE_Lopez"]) then {
 			_dialogueArray = [
 				"He sido golpeado.",
@@ -105,6 +113,7 @@ switch (_event) do {
 			[_unit,format ["Threat vector: %1",round (_unit getDir _damageSource)]] remoteExec ["groupChat"];
 		};
 	};
+	// Lines used when a Spectre gets a kill.
 	case "targetKilled" :		{
 			
 		if (str _unit in ["unitSPECTRE_Lopez"]) then {
@@ -229,6 +238,7 @@ switch (_event) do {
 			_number = 2;
 			};
 	};
+	// Lines used when a Spectre joins a team.
 	case "spectreJoin" :		{
 			
 		if (str _unit in ["unitSPECTRE_Lopez"]) then {
@@ -268,6 +278,7 @@ switch (_event) do {
 		_number = 2;
 		[_unit,format ["BNET: %1 added.",(name _unit)]] remoteExec ["groupChat"];
 	};
+	// Lines used when you use the "talk to" action.
 	case "spectreTalk" : {
 		if (str _unit in ["unitSPECTRE_Lopez"]) then {
 			_dialogueArray = [
@@ -356,6 +367,7 @@ switch (_event) do {
 	};
 };
 
+// Finally, detect whether we succeeded our roll, and play the line and sound if so.
 if (_number == 2) then {
 
 	[_unit,format ["%1: %2",(name _unit),(selectRandom _dialogueArray)]] remoteExec ["sideChat"];

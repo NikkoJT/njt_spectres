@@ -1,3 +1,9 @@
+// NJT_SPECTRES
+// Resilient, quippy AI allies for use in Arma 3 missions.
+// This script should be run from init.sqf (with an isServer check) or initServer.sqf
+
+
+// Define the units to be used, their teams (used for terminal associations) and names
 _spectreTeamA = [
 	
 	["unitSPECTRE_Foehammer",["419 Foehammer","419","Foehammer"]],
@@ -29,6 +35,7 @@ _spectreTeamE = [
 	["unitSPECTRE_Windblade",["057 Windblade","057","Windblade"]]
 ];
 
+// Turn these into hashmaps for performance etc and make them public so all clients can use them
 njt_spectres_listA = createHashMapFromArray _spectreTeamA;
 njt_spectres_listB = createHashMapFromArray _spectreTeamB;
 njt_spectres_listC = createHashMapFromArray _spectreTeamC;
@@ -40,26 +47,29 @@ publicVariable "njt_spectres_listC";
 publicVariable "njt_spectres_listD";
 publicVariable "njt_spectres_listE";
 
+// Make a combined list of all Spectres for later use
 _spectresAllTeams = (_spectreTeamA + _spectreTeamB + _spectreTeamC + _spectreTeamD + _spectreTeamE);
 njt_spectres_listAll = createHashMapFromArray _spectresAllTeams;
 publicVariable "njt_spectres_listAll";
 
+// Perform initial setup on all Spectres
 {
 	_spectre = missionNamespace getVariable [_x,objNull];
 	_spectre enableSimulationGlobal false;
 	[_spectre,true] remoteExec ["setCaptive"];
 } forEach keys njt_spectres_listAll;
 
+// Add the dialogue EH for when Spectres get kills
 addMissionEventHandler ["EntityKilled", {
 	params ["_unit", "_killer", "_instigator", "_useEffects"];
 	
-		// Response for most Spectres on killing an enemy
+		// You can add a faction check (NOT SIDE) on _unit as well if you don't want Spectres to brag about friendly fire.
 		if ((str _killer in keys njt_spectres_listAll) && (_unit isKindOf "Man")) then {
 					["targetKilled",_killer] remoteExec ["njt_fnc_spectres_dialogue",2];
 		};
 }];
 
-
+// Add action to terminals for activating Spectres.
 {
 	[_x,
 	"Activate Spectre team",
