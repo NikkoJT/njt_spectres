@@ -33,7 +33,7 @@ switch (_event) do {
 				"¡Ayuadame!",
 				"¡Soy un amante, no un luchador!"];
 			_number = floor(random 5);
-			[_unit,format ["Dirección de amenaza: %1",round (_unit getDir _damageSource)]] remoteExec ["groupChat"];
+			[_unit,format ["Dirección de amenaza: %1",round (_unit getDir _damageSource)]] remoteExec ["groupChat",(group _unit)];
 		} else {
 			_dialogueArray = [
 				"Incoming!",
@@ -110,7 +110,7 @@ switch (_event) do {
 				"Position compromised.",
 				"If I don't make it...tell my wife I said...hello..."];
 			_number = floor(random 3);
-			[_unit,format ["Threat vector: %1",round (_unit getDir _damageSource)]] remoteExec ["groupChat"];
+			[_unit,format ["Threat vector: %1",round (_unit getDir _damageSource)]] remoteExec ["groupChat",(group _unit)];
 		};
 	};
 	// Lines used when a Spectre gets a kill.
@@ -276,7 +276,7 @@ switch (_event) do {
 				"Spectres add class to what would otherwise be an ugly brawl."];
 		};
 		_number = 2;
-		[_unit,format ["BNET: %1 added.",(name _unit)]] remoteExec ["groupChat"];
+		[_unit,format ["BNET: %1 added.",(name _unit)]] remoteExec ["groupChat",(group _unit)];
 	};
 	// Lines used when you use the "talk to" action.
 	case "spectreTalk" : {
