@@ -370,6 +370,6 @@ switch (_event) do {
 // Finally, detect whether we succeeded our roll, and play the line and sound if so.
 if (_number == 2) then {
 
-	[_unit,format ["%1: %2",(name _unit),(selectRandom _dialogueArray)]] remoteExec ["sideChat"];
+	[_unit,format ["%1: %2",(name _unit),(selectRandom _dialogueArray)]] remoteExec ["groupChat",(group _unit)];
 	[_unit,"spectres_robot"] remoteExec ["say3D"];
 };

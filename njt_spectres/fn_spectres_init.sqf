@@ -29,7 +29,7 @@ switch (vehicleVarName _target) do {
 	_spectre = missionNamespace getVariable [_x,objNull];
 	if (isNull _spectre) exitWith {};
 	
-	_spectre enableSimulationGlobal true;
+	[_spectre,true] remoteExec ["enableSimulationGlobal",2];
 
 	private _name = (_spectresList get str _spectre);
 
@@ -65,7 +65,7 @@ switch (vehicleVarName _target) do {
 		[	"Talk to Spectre",	// title
 			{
 				params ["_target", "_caller", "_actionId", "_arguments"];
-				["spectreTalk",_target] remoteExec ["njt_fnc_spectres_dialogue",(side _target)]; // script
+				["spectreTalk",_target] remoteExec ["njt_fnc_spectres_dialogue",2]; // script
 			},
 			nil,		// arguments
 			1.5,		// priority
@@ -86,7 +86,7 @@ switch (vehicleVarName _target) do {
 				params ["_target", "_caller", "_actionId", "_arguments"];
 				[_target] join _caller;
 				sleep 0.5;
-				["spectreJoin",_target] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
+				["spectreJoin",_target] remoteExec ["njt_fnc_spectres_dialogue",2];
 			},
 			nil,		// arguments
 			1.5,		// priority

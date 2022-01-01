@@ -81,7 +81,7 @@ addMissionEventHandler ["EntityKilled", {
 	{},
 	{
 		params ["_target", "_caller", "_actionId", "_arguments"];
-		[_target,_caller] call njt_fnc_spectres_Init;
+		[_target,_caller] call njt_fnc_spectres_init;
 		_target setVariable ["spectres_terminalActivated",true,true];
 	},
 	{},
