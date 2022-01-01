@@ -58,7 +58,7 @@ switch (vehicleVarName _target) do {
 	// Add them to the group of the person who activated the terminal.
 	[_spectre] join _caller;
 	sleep 0.5;
-	["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
+	["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _spectre)];
 	
 	// Don't shake the lightbulb
 	[_spectre,
@@ -86,7 +86,7 @@ switch (vehicleVarName _target) do {
 				params ["_target", "_caller", "_actionId", "_arguments"];
 				[_target] join _caller;
 				sleep 0.5;
-				["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
+				["spectreJoin",_target] remoteExec ["njt_fnc_spectres_dialogue",(group _caller)];
 			},
 			nil,		// arguments
 			1.5,		// priority
