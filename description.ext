@@ -1,0 +1,28 @@
+class CfgSounds
+{
+	sounds[] = {spectres_robot};
+	
+	class spectres_robot
+	{
+		// how the sound is referred to in the editor (e.g. trigger effects)
+		name = "spectres_robot";
+		// filename, volume, pitch, distance
+		sound[] = {"njt_spectres\robot.ogg", 5, 1, 100};
+		// subtitle delay in seconds, subtitle text 
+		titles[] = {0, ""};
+	};
+};
+
+class CfgFunctions
+{
+	class njt
+	{
+		class spectres
+		{
+			file = "njt_spectres";
+			class spectres_init{};
+			class spectres_damageHandler{};
+			class spectres_dialogue{};
+		};
+	};
+};
