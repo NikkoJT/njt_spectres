@@ -58,7 +58,7 @@ switch (vehicleVarName _target) do {
 	// Add them to the group of the person who activated the terminal.
 	[_spectre] join _caller;
 	sleep 0.5;
-	["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",(group _spectre)];
+	["spectreJoin",_spectre] remoteExec ["njt_fnc_spectres_dialogue",2];
 	
 	// Don't shake the lightbulb
 	[_spectre,
@@ -72,7 +72,7 @@ switch (vehicleVarName _target) do {
 			true,		// showWindow
 			true,		// hideOnUse
 			"",			// shortcut
-			"(side _this) == (side _target)", 	// condition
+			"(side group _this) == (side group _target)", 	// condition
 			3,			// radius
 			false,		// unconscious
 			"",			// selection
@@ -99,6 +99,7 @@ switch (vehicleVarName _target) do {
 			"",			// selection
 			""			// memoryPoint};
 	]] remoteExec ["addAction",0,true];
+	[_spectre,false] remoteExec ["setCaptive",0,true];
 
 	
 } forEach keys _spectresList;
